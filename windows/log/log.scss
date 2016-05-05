@@ -1,0 +1,24 @@
+body{
+	background-color: #4282CE;
+}
+
+input{
+	display: block;
+	width: 90%;
+	height: 48px;
+	margin: 18px auto;
+	padding: 0 8px;
+	box-sizing: border-box;
+
+	background-color: #fff;
+	border-radius: 8px;
+	border: none;
+
+	font-size: 28px;
+	line-height: 48px;
+	outline: none;
+
+	&:focus{
+		outline: none;
+	}
+}

@@ -14,33 +14,35 @@ function createMainWindow(){
     show: false
   }));
   windowMap['main'] = windows.length-1;
-  windows[windowMap['main']].loadURL('file://'+__dirname+'/index.html');
+  windows[windowMap['main']].loadURL('file://'+__dirname+'/windows/main/main.html');
 }
 
 function createTray(){
-  let appIcon = new Tray('clock6.png');
+  let appIcon = new Tray('shared-resources/clock6.png');
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Log',
       accelerator: 'Super+Shift+L',
-      role: 'log',
       click: function (item, focusedWindow){
         showLogWindow();
       }
     }, {
+      label: 'Options',
+      click: function (){
+        //open options menu
+      }
+    }, {
       label: 'Quit',
-      role: 'quit',
       click: function (){
         app.quit();
       }
-    }
+    }      
   ]);
   appIcon.setToolTip('This is my application.');
   appIcon.setContextMenu(contextMenu);
 }
 
 function registerGlobalShortcut(){
-  // Register a 'CommandOrControl+X' shortcut listener.
   var ret = globalShortcut.register('Super+Shift+L', function() {
     showLogWindow();
   });
@@ -52,20 +54,21 @@ function registerGlobalShortcut(){
 
 function showLogWindow(){
   if( windowMap['log'] !== undefined ){
-    return;
+    return;1
   }
   //create the log window
   windows.push(new BrowserWindow({
     width: 400,
     height: 84,
-    x: 0,
-    y: 0,
-    movable: false
+    useContentSize: true,
+    center: true,
+    movable: false,
+    frame: false
   }));
   windowMap['log'] = windows.length-1;
   //load the log page
   windows[windowMap['log']].setMenu(null);
-  windows[windowMap['log']].loadURL('file://'+__dirname+'/log.html');
+  windows[windowMap['log']].loadURL('file://'+__dirname+'/windows/log/log.html');
 }
 
 /*app.on('activate', function () {
