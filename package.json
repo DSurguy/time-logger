@@ -2,9 +2,9 @@
   "name": "electron-quick-start",
   "version": "1.0.0",
   "description": "A minimal Electron application",
-  "main": "main.js",
+  "main": "start.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron start.js --enable-logging"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,9 @@
   "homepage": "https://github.com/electron/electron-quick-start#readme",
   "devDependencies": {
     "electron-prebuilt": "^0.37.8"
+  },
+  "dependencies": {
+    "sequelize": "^3.22.0",
+    "sqlite3": "^3.1.3"
   }
 }

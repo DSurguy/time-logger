@@ -54,14 +54,20 @@ function registerGlobalShortcut(){
 
 function showLogWindow(){
   if( windowMap['log'] !== undefined ){
-    return;1
+    return;
   }
+
+  //determine what size the window should be
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  console.log(width, height);
+
   //create the log window
   windows.push(new BrowserWindow({
-    width: 400,
+    width: parseInt(width*0.9),
     height: 84,
     useContentSize: true,
-    center: true,
+    x: parseInt(width*0.05),
+    y: parseInt(height*0.05),
     movable: false,
     frame: false
   }));
