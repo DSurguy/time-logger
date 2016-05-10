@@ -1,13 +1,20 @@
 <html>
 <head>
-	<title>Log Activity</title>
+	<title>Time Log</title>
 	<link rel="stylesheet" type="text/css" href="log.css">
+	<link rel="stylesheet" type="text/css" href="pikaday.css">
 </head>
 <body>
-	<input id="mainInput" type="text" placeholder="What are you up to?"/>
-	<!--<script type="text/javascript">
-		require('./log.js');
-	</script>-->
+	<div class="header">
+		<div class="date-selector-container">
+			<label for="date-selector">Date</label>
+			<input type="button" id="date-selector" class="date-selector" />
+		</div>
+	</div>
+	<script type="text/javascript">
+		var moment = require('moment');
+	</script>
+	<script type="text/javascript" src="./pikaday.js"></script>
 	<script type="text/javascript" src="./log.js"></script>
 </body>
 </html>

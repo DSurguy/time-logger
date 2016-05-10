@@ -1,72 +1,32 @@
-const Database = require('../../shared-resources/database/database.js'),
-	moment = require('moment');
+const Database = require('../../shared-resources/database/database.js');
 
-function setupInputBindings(){
-	var mainInput = document.querySelector('#mainInput');
+let datepicker;
 
-	//bind keycodeHandler
-	mainInput.addEventListener('keypress', (e)=>{routeMainInputKeypress(e.keyCode, e)});
-};
+function setupDatePicker(){
+	var datepickerButton = document.querySelector('.date-selector');
 
-function routeMainInputKeypress(keyCode, e){
-	switch(keyCode){
-		case 13: //ENTER
-			commitInput(e.target.value);
-		break;
-		case 123: //F12
-			require('remote').getCurrentWindow().toggleDevTools();
-		break;
-	}
-};
-
-function commitInput(input){
-	validateInput(input)
-	.then( () => {
-		return new Promise( (resolve, reject) => {
-			Database.store('records').insert({
-				text: input,
-				date: moment().format('YYYYMMDD'),
-				time: moment().format('HH:mm:ss')
-			}, (err, docs) => {
-				if( err ){
-					reject(err); return;
-				}
-				resolve(docs);
-			});
-		});
-	})
-	.then((newRecord) => {
-		//report success
-		reportSuccessAndClose(newRecord);
-	})
-	.catch( (err) => {
-		//report error
-		reportError(err);
+	datepicker = new Pikaday({
+		onSelect: function (){
+			updateDateSelection(this.getMoment())
+		},
+		format: 'MM / DD / YYYY',
+		defaultDate: moment().toDate(),
+		field: datepickerButton
 	});
-};
+}
 
-function validateInput(input){
-	return new Promise( (resolve, reject) =>{
-		if( input.trim() == "" ){
-			reject(new Error('Input length is zero'));
-			return;
-		}
-		resolve();
-	});
-};
+function updateDateSelection(mDate){
+	document.querySelector('.date-selector').value = mDate.format('MM / DD / YYYY')
+	loadRecordList(mDate);
+}
 
+function loadRecordList(mDate){
 
-function reportError(err){
-	console.log(err);
-};
-
-function reportSuccessAndClose(newRecord){
-	console.log(newRecord);
-};
+}
 
 window.onload = function (){
 	Database.init().then( () => {
-		setupInputBindings();
-		document.querySelector('input').focus();
+		setupDatePicker();
+		updateDateSelection(moment());
 	});
 };

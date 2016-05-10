@@ -23,9 +23,14 @@ function createTray(){
   let appIcon = new Tray('shared-resources/clock6.png');
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'Log',
+      label: 'Input',
       accelerator: 'Super+Shift+L',
       click: function (item, focusedWindow){
+        showInputWindow();
+      }
+    }, {
+      label: 'Log',
+      click: function (){
         showLogWindow();
       }
     }, {
@@ -46,7 +51,7 @@ function createTray(){
 
 function registerGlobalShortcut(){
   var ret = globalShortcut.register('Super+Shift+L', function() {
-    showLogWindow();
+    showInputWindow();
   });
 
   if (!ret) {
@@ -54,14 +59,13 @@ function registerGlobalShortcut(){
   }
 };
 
-function showLogWindow(){
-  if( windowMap['log'] !== undefined ){
+function showInputWindow(){
+  if( windowMap['input'] !== undefined ){
     return;
   }
 
   //determine what size the window should be
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
-  console.log(width, height);
 
   //create the log window
   windows.push(new BrowserWindow({
@@ -72,6 +76,27 @@ function showLogWindow(){
     y: parseInt(height*0.05),
     movable: false,
     frame: false
+  }));
+  windowMap['input'] = windows.length-1;
+  //load the log page
+  windows[windowMap['input']].setMenu(null);
+  windows[windowMap['input']].loadURL('file://'+__dirname+'/windows/input/input.html');
+}
+
+function showLogWindow(){
+  if( windowMap['log'] !== undefined ){
+    return;
+  }
+
+  //determine what size the window should be
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+
+  //create the log window
+  windows.push(new BrowserWindow({
+    width: 400,
+    height: 540,
+    useContentSize: false,
+    center: true
   }));
   windowMap['log'] = windows.length-1;
   //load the log page
