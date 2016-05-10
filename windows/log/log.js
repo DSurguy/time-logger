@@ -1,5 +1,5 @@
-const Database = require('../../shared-resources/database/database.js');
-let _connection;
+const Database = require('../../shared-resources/database/database.js'),
+	moment = require('moment');
 
 function setupInputBindings(){
 	var mainInput = document.querySelector('#mainInput');
@@ -21,10 +21,21 @@ function routeMainInputKeypress(keyCode, e){
 
 function commitInput(input){
 	validateInput(input)
-	.then(()=>{
-		//
+	.then( () => {
+		return new Promise( (resolve, reject) => {
+			Database.store('records').insert({
+				text: input,
+				date: moment().format('YYYYMMDD'),
+				time: moment().format('HH:mm:ss')
+			}, (err, docs) => {
+				if( err ){
+					reject(err); return;
+				}
+				resolve(docs);
+			});
+		});
 	})
-	.then((newRecord)=>{
+	.then((newRecord) => {
 		//report success
 		reportSuccessAndClose(newRecord);
 	})
@@ -54,8 +65,7 @@ function reportSuccessAndClose(newRecord){
 };
 
 window.onload = function (){
-	Database.connection().then((connection)=>{
-		_connection = connection;
+	Database.init().then( () => {
 		setupInputBindings();
 		document.querySelector('input').focus();
 	});

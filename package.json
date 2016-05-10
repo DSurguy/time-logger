@@ -29,6 +29,7 @@
   "dependencies": {
     "electron-debug": "^0.7.0",
     "mkdirp": "^0.5.1",
-    "pouchdb": "^5.3.2"
+    "moment": "^2.13.0",
+    "nedb": "^1.8.0"
   }
 }
