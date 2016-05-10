@@ -2,11 +2,10 @@ body {
   background-color: #4282CE; }
 
 input {
-  display: inline;
-  float: left;
-  width: 70%;
+  display: block;
+  width: 90%;
   height: 48px;
-  margin: 18px 5%;
+  margin: 18px auto;
   padding: 0 8px;
   box-sizing: border-box;
   background-color: #fff;
