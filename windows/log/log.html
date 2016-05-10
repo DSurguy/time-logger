@@ -5,12 +5,26 @@
 	<link rel="stylesheet" type="text/css" href="pikaday.css">
 </head>
 <body>
+	
 	<div class="header">
 		<div class="date-selector-container">
 			<label for="date-selector">Date</label>
 			<input type="button" id="date-selector" class="date-selector" />
 		</div>
 	</div>
+	
+	<table class="record-list">
+		<th>
+			<tr><td>
+				Task
+			</td><td>
+				Time
+			</td></tr>
+		</th>
+		<tbody></tbody>
+	</table>
+
+	
 	<script type="text/javascript">
 		var moment = require('moment');
 	</script>
