@@ -23,12 +23,10 @@
   },
   "homepage": "https://github.com/electron/electron-quick-start#readme",
   "devDependencies": {
-    "electron-prebuilt": "^0.37.8",
-    "gulp": "^3.9.1"
+    "electron-prebuilt": "^0.37.8"
   },
   "dependencies": {
-    "electron-debug": "^0.7.0",
-    "mkdirp": "^0.5.1",
-    "pouchdb": "^5.3.2"
+    "sequelize": "^3.22.0",
+    "sqlite3": "^3.1.3"
   }
 }

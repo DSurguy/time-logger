@@ -3,10 +3,11 @@ body{
 }
 
 input{
-	display: block;
-	width: 90%;
+	display: inline;
+	float: left;
+	width: 70%;
 	height: 48px;
-	margin: 18px auto;
+	margin: 18px 5%;
 	padding: 0 8px;
 	box-sizing: border-box;
 
