@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "main": "start.js",
   "scripts": {
-    "start": "electron start.js --enable-logging"
+    "start": "./node-modules/electron-prebuilt/electron.exe start.js --enable-logging"
   },
   "repository": {
     "type": "git",
