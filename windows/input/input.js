@@ -1,5 +1,6 @@
 const Database = require('../../shared-resources/database/database.js'),
-	moment = require('moment');
+	moment = require('moment'),
+	remote = require('remote');
 
 function setupInputBindings(){
 	var mainInput = document.querySelector('#mainInput');
@@ -20,8 +21,7 @@ function routeMainInputKeypress(keyCode, e){
 };
 
 function commitInput(input){
-	validateInput(input)
-	.then( () => {
+	validateInput(input).then( () => {
 		return new Promise( (resolve, reject) => {
 			Database.store('records').insert({
 				text: input,
@@ -61,7 +61,27 @@ function reportError(err){
 };
 
 function reportSuccessAndClose(newRecord){
-	console.log(newRecord);
+		
+	let successSlider = document.createElement('div');
+	
+	successSlider.classList.add('toast');
+	
+	successSlider.innerHTML = '<div class="icon"><img src="../../shared-resources/images/checkmark.svg" /></div><div class="message">Done!</div><div class="log"></div>';
+	let logElem = successSlider.querySelector('.log');
+	
+	logElem.innerHTML = '<span class="normal">Logged </span><span class="mono">'+newRecord.text+'</span><span class="normal"> at </span><span class="mono">'+newRecord.time+'</span>';
+	
+	document.body.appendChild(successSlider);
+	//reflow
+	let fake = successSlider.offsetHeight;
+	
+	//trigger CSS slide-right
+	successSlider.classList.add('end-position');
+	
+	//close the window after two seconds
+	setTimeout(() => {
+		remote.getCurrentWindow().close();
+	}, 2000);
 };
 
 window.onload = function (){
