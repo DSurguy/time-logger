@@ -1,6 +1,7 @@
 const Database = require('../../shared-resources/database/database.js'),
 	moment = require('moment'),
-	remote = require('remote');
+	remote = require('remote'),
+	{ipcRenderer} = require('electron');
 
 function setupInputBindings(){
 	var mainInput = document.querySelector('#mainInput');
@@ -80,13 +81,35 @@ function reportSuccessAndClose(newRecord){
 	
 	//close the window after two seconds
 	setTimeout(() => {
-		remote.getCurrentWindow().close();
+		ipcRenderer.sendSync('window', {
+			action: 'close',
+			data: {
+				windowID: 'input'
+			}
+		});
 	}, 2000);
 };
+
+function listenForMessages(){
+	ipcRenderer.on('window-input', (event, args) => {
+		switch(args.action){
+			case "focus":
+				focusInput();
+			break;
+		}
+	});
+};
+
+function focusInput(){
+	var input = document.querySelector('input');
+	input.focus();
+	input.setSelectionRange(0, input.value.length);
+}
 
 window.onload = function (){
 	Database.init().then( () => {
 		setupInputBindings();
-		document.querySelector('input').focus();
+		focusInput();
+		listenForMessages();
 	});
 };

@@ -1,22 +1,20 @@
 const electron = require('electron');
 // Module to control application life.
-const {app, globalShortcut, Tray, Menu, BrowserWindow} = electron;
+const {app, globalShortcut, Tray, Menu, BrowserWindow, ipcMain} = electron;
 
 //require('electron-debug')({showDevTools: true});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let windows = [];
-let windowMap = {};
+let windows = {};
 
 function createMainWindow(){
-  windows.push(new BrowserWindow({
+  windows['main'] = new BrowserWindow({
     width: 800,
     height: 640,
     show: false
-  }));
-  windowMap['main'] = windows.length-1;
-  windows[windowMap['main']].loadURL('file://'+__dirname+'/windows/main/main.html');
+  });
+  windows['main'].loadURL('file://'+__dirname+'/windows/main/main.html');
 }
 
 function createTray(){
@@ -60,7 +58,11 @@ function registerGlobalShortcut(){
 };
 
 function showInputWindow(){
-  if( windowMap['input'] !== undefined ){
+  if( windows['input'] !== undefined ){
+    //we want to re-focus the window
+    windows['input'].focus();
+    //tell the window to re-focus the input element
+    windows['input'].webContents.send('window-input', {action:'focus'});
     return;
   }
 
@@ -68,7 +70,7 @@ function showInputWindow(){
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
 
   //create the log window
-  windows.push(new BrowserWindow({
+  windows['input'] = new BrowserWindow({
     width: parseInt(width*0.9),
     height: 84,
     useContentSize: true,
@@ -76,15 +78,15 @@ function showInputWindow(){
     y: parseInt(height*0.05),
     movable: false,
     frame: false
-  }));
-  windowMap['input'] = windows.length-1;
+  });
+  
   //load the log page
-  windows[windowMap['input']].setMenu(null);
-  windows[windowMap['input']].loadURL('file://'+__dirname+'/windows/input/input.html');
+  windows['input'].setMenu(null);
+  windows['input'].loadURL('file://'+__dirname+'/windows/input/input.html');
 }
 
 function showLogWindow(){
-  if( windowMap['log'] !== undefined ){
+  if( windows['log'] !== undefined ){
     return;
   }
 
@@ -92,26 +94,17 @@ function showLogWindow(){
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
 
   //create the log window
-  windows.push(new BrowserWindow({
+  windows['log'] = new BrowserWindow({
     width: 400,
     height: 540,
     useContentSize: false,
     center: true
-  }));
-  windowMap['log'] = windows.length-1;
+  });
   //load the log page
-  windows[windowMap['log']].setMenu(null);
-  windows[windowMap['log']].loadURL('file://'+__dirname+'/windows/log/log.html');
+  windows['log'].setMenu(null);
+  windows['log'].loadURL('file://'+__dirname+'/windows/log/log.html');
 }
 
-/*app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
-*/
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -122,3 +115,18 @@ app.on('ready', function (){
 
   registerGlobalShortcut();
 });
+
+ipcMain.on('window', (event, arg) => {
+  switch(arg.action){
+    case "close":
+      closeWindow(arg.data);
+    break;
+  }
+});
+
+function closeWindow(data){
+  if( windows[data.windowID] ){
+    windows[data.windowID].close();
+    delete windows[data.windowID];
+  }
+}
