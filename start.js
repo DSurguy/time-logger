@@ -35,6 +35,7 @@ function createTray(){
       label: 'Options',
       click: function (){
         //open options menu
+        showOptionsWindow();
       }
     }, {
       label: 'Quit',
@@ -90,9 +91,6 @@ function showLogWindow(){
     return;
   }
 
-  //determine what size the window should be
-  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
-
   //create the log window
   windows['log'] = new BrowserWindow({
     width: 400,
@@ -103,6 +101,23 @@ function showLogWindow(){
   //load the log page
   windows['log'].setMenu(null);
   windows['log'].loadURL('file://'+__dirname+'/windows/log/log.html');
+}
+
+function showOptionsWindow(){
+  if( windows['options'] !== undefined ){
+    return;
+  }
+
+  //create the options window
+  windows['options'] = new BrowserWindow({
+    width: 400,
+    height: 540,
+    useContentSize: false,
+    center: true
+  });
+  //load the options page
+  windows['options'].setMenu(null);
+  windows['options'].loadURL('file://'+__dirname+'/windows/options/options.html');
 }
 
 // This method will be called when Electron has finished
