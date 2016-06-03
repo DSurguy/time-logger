@@ -1,0 +1,47 @@
+.d-hidden {
+  display: none !important; }
+
+body {
+  padding-top: 24px; }
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  font-size: 20px;
+  line-height: 24px;
+  color: #fff;
+  background-color: #444; }
+
+.option {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  align-items: flex-start;
+  justify-content: flex-end; }
+  .option:first-child {
+    margin-top: 0; }
+  .option input {
+    font-family: consolas, monospace; }
+    .option input[type=number] {
+      flex: 0 0 84px;
+      width: 84px;
+      height: 32px;
+      padding: 0 2px;
+      font-size: 24px;
+      line-height: 32px; }
+  .option label {
+    font-family: sans-serif;
+    margin-right: 10px; }
+    .option label .title {
+      display: block;
+      width: 100%;
+      font-size: 20px;
+      font-weight: bold; }
+    .option label .desc {
+      display: block;
+      width: 100%;
+      font-size: 14px;
+      color: #777; }

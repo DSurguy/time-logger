@@ -4,11 +4,18 @@
 	<link rel="stylesheet" type="text/css" href="options.css">
 </head>
 <body>
-	<label>
-        Seconds to show input success message
-    </label>
-    <input type="number" name="input-success-timer" value="2.0">
-    
+	<div class="header">
+		<div class="saveIcon d-hidden">Save</div>
+	</div>
+	<div class="options d-hidden">
+		<div class="option" data-option-key="success-time">
+			<label>
+				<div class="title">Success Message Time</div>
+				<div class="desc">Number of seconds the success message will be displayed when inputting data</div>
+			</label>
+			<input type="number" name="input-success-timer" value="2.0">
+		</div>
+    </div>
     
 	<script type="text/javascript" src="./options.js"></script>
 </body>

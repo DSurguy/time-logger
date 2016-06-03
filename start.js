@@ -2,7 +2,10 @@ const electron = require('electron');
 // Module to control application life.
 const {app, globalShortcut, Tray, Menu, BrowserWindow, ipcMain} = electron;
 
-//require('electron-debug')({showDevTools: true});
+//How to turn this on with command line flag?
+if( process.argv.filter((arg)=>{return (arg=="--dt"||arg=="--dev-tools")}).length ){
+  require('electron-debug')({showDevTools: true});
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
