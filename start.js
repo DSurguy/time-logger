@@ -1,6 +1,8 @@
 const electron = require('electron');
 // Module to control application life.
 const {app, globalShortcut, Tray, Menu, BrowserWindow, ipcMain} = electron;
+//prevent garbage collection of tray icon
+let trayIcon;
 
 //How to turn this on with command line flag?
 if( process.argv.filter((arg)=>{return (arg=="--dt"||arg=="--dev-tools")}).length ){
@@ -21,7 +23,7 @@ function createMainWindow(){
 }
 
 function createTray(){
-  let appIcon = new Tray('shared-resources/clock6.png');
+  trayIcon = new Tray('shared-resources/clock6.png');
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Input',
@@ -47,8 +49,8 @@ function createTray(){
       }
     }      
   ]);
-  appIcon.setToolTip('This is my application.');
-  appIcon.setContextMenu(contextMenu);
+  trayIcon.setToolTip('This is my application.');
+  trayIcon.setContextMenu(contextMenu);
 }
 
 function registerGlobalShortcut(){
