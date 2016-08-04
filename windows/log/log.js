@@ -45,7 +45,7 @@ function createRawRowHtmlString(doc1, doc2){
 		let diffedTime = diffTime(doc1.time,doc2.time).split(/:/g);
 		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</div>';
 		//hours diff
-		htmlString += '<div class="hoursDiffCol">'+diffedTime[0]+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
 	}
 	else{
 		htmlString +='<div class="diffCol"></div>';
@@ -59,14 +59,17 @@ function createRoundedRowElement(doc1, doc2){
 	let roundedRow = document.createElement('div');
 	roundedRow.classList.add('row');
 	roundedRow.classList.add('rounded');
-	htmlString = '<div class="taskCol">'+doc1.text+'</div>'
-		+'<div class="timeCol">'+roundTime(doc1.time)+'</div>';
+	htmlString = '<div class="taskCol">'+doc1.text+'</div>';
+	let roundedTime = roundTime(doc1.time),
+		roundedTimeSplit = roundedTime.split(/:/g);
+	let ampm = parseInt(roundedTime.split(/:/g)[0]) < 12 ? 'AM' : 'PM';
+	htmlString += '<div class="timeCol">'+parseInt(roundedTimeSplit[0])+':'+roundedTimeSplit[1]+' '+ampm+'</div>';
 	if( doc2 ){
 		//raw diff
 		let diffedTime = diffTime(roundTime(doc1.time),roundTime(doc2.time)).split(/:/g);
-		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</div>';
+		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+'</div>';
 		//hours diff
-		htmlString += '<div class="hoursDiffCol">'+diffedTime[0]+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
 	}
 	else{
 		htmlString +='<div class="diffCol"></div>';
