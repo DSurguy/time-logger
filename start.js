@@ -19,11 +19,11 @@ function createMainWindow(){
     height: 640,
     show: false
   });
-  windows['main'].loadURL('file://'+__dirname+'/windows/main/main.html');
+  windows['main'].loadURL(__dirname+'/windows/main/main.html');
 }
 
 function createTray(){
-  trayIcon = new Tray('shared-resources/clock6.png');
+  trayIcon = new Tray(__dirname+'/shared-resources/clock-final.png');
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'Input',
@@ -88,7 +88,7 @@ function showInputWindow(){
   
   //load the log page
   windows['input'].setMenu(null);
-  windows['input'].loadURL('file://'+__dirname+'/windows/input/input.html');
+  windows['input'].loadURL(__dirname+'/windows/input/input.html');
 }
 
 function showLogWindow(){
@@ -105,7 +105,7 @@ function showLogWindow(){
   });
   //load the log page
   windows['log'].setMenu(null);
-  windows['log'].loadURL('file://'+__dirname+'/windows/log/log.html');
+  windows['log'].loadURL(__dirname+'/windows/log/log.html');
 }
 
 function showOptionsWindow(){
@@ -122,7 +122,7 @@ function showOptionsWindow(){
   });
   //load the options page
   windows['options'].setMenu(null);
-  windows['options'].loadURL('file://'+__dirname+'/windows/options/options.html');
+  windows['options'].loadURL(__dirname+'/windows/options/options.html');
 }
 
 // This method will be called when Electron has finished

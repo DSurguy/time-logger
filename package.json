@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/electron/electron-quick-start#readme",
   "devDependencies": {
+    "electron-packager": "^7.4.0",
     "electron-prebuilt": "^0.37.8",
     "gulp": "^3.9.1",
     "gulp-sass": "^2.3.1"
