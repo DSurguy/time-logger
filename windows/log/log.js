@@ -60,11 +60,23 @@ function createRoundedRowElement(doc1, doc2){
 	let roundedRow = document.createElement('div');
 	roundedRow.classList.add('row');
 	roundedRow.classList.add('rounded');
+
+	//add the actual task text
 	htmlString = '<div class="taskCol">'+doc1.text+'</div>';
+
+	//round the time and split it for use later
 	let roundedTime = roundTime(doc1.time),
 		roundedTimeSplit = roundedTime.split(/:/g);
-	let ampm = parseInt(roundedTime.split(/:/g)[0]) < 12 ? 'AM' : 'PM';
-	htmlString += '<div class="timeCol">'+parseInt(roundedTimeSplit[0])+':'+roundedTimeSplit[1]+' '+ampm+'</div>';
+
+	//calculate AMPM
+	let ampm = parseInt(roundedTimeSplit[0]) < 12 ? 'AM' : 'PM';
+	//calculate AMPM hours
+	let ampmHours = parseInt(roundedTimeSplit[0])%12;
+
+	//add the entry time to the row
+	htmlString += '<div class="timeCol">'+ampmHours+':'+roundedTimeSplit[1]+' '+ampm+'</div>';
+
+	//time diffs
 	if( doc2 ){
 		let diffedTime = diffTime(roundTime(doc1.time),roundTime(doc2.time)).split(/:/g);
 		//hours diff
