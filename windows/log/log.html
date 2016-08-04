@@ -5,26 +5,33 @@
 	<link rel="stylesheet" type="text/css" href="pikaday.css">
 </head>
 <body>
-	
-	<div class="header">
+	<div class="body-header">
 		<div class="date-selector-container">
 			<label for="date-selector">Date</label>
-			<input type="button" id="date-selector" class="date-selector" />
+			<input type="button" class="date-selector" />
+		</div>
+		<div class="toggle-rounding-container">
+			<label for="date-selector">Rounding Mode</label>
+			<input type="button" class="toggle-rounding-button" value="Rounded" />
 		</div>
 	</div>
 	
-	<table class="record-list">
-		<th>
-			<tr><td>
+	<div class="record-list">
+		<div class="row header">
+			<div class="taskCol">
 				Task
-			</td><td>
+			</div>
+			<div class="timeCol">
 				Time
-			</td><td>
-				Diff
-			</td></tr>
-		</th>
-		<tbody></tbody>
-	</table>
+			</div>
+			<div class="diffCol">
+				Raw Diff
+			</div>
+			<div class="hoursDiffCol">
+				Hours Diff
+			</div>
+		</div>
+	</div>
 
 	
 	<script type="text/javascript">

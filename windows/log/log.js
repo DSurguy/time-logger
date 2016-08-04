@@ -24,40 +24,56 @@ function loadRecordList(mDate){
 	Database.store('records').find({
 		date: mDate.format('YYYYMMDD')
 	}).sort({time: 1}).exec( (err, docs) => {
-		//grab and empty the table body
-		let recordTable = document.querySelector('.record-list tbody');
-		recordTable.innerHTML = '';
+		//empty the table body
+		let recordTable = document.querySelector('.record-list');
+		recordTable.innerHTML = recordTable.querySelector('.header').outerHTML;
 		//add all the records
 		for( let i=0; i<docs.length; i++ ){
-			let rawRow = document.createElement('tr');
-			rawRow.classList.add('raw');
-			let htmlString = '<td>'+docs[i].text+'</td>'
-				+'<td>'+docs[i].time+'</td>';
-			if( i > 0 ){
-				let diffedTime = diffTime(docs[i].time,docs[i-1].time).split(/:/g);
-				htmlString +='<td>'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</td>'; 
-			}
-			else{
-				htmlString +='<td></td>';
-			}
-			rawRow.innerHTML = htmlString; 
-			recordTable.appendChild(rawRow);
-
-			let roundedRow = document.createElement('tr');
-			roundedRow.classList.add('rounded');
-			htmlString = '<td>'+docs[i].text+'</td>'
-				+'<td>'+roundTime(docs[i].time)+'</td>';
-			if( i > 0 ){
-				let diffedTime = diffTime(roundTime(docs[i].time),roundTime(docs[i-1].time)).split(/:/g);
-				htmlString +='<td>'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</td>'; 
-			}
-			else{
-				htmlString +='<td></td>';
-			}
-			roundedRow.innerHTML = htmlString; 
-			recordTable.appendChild(roundedRow);
+			recordTable.appendChild(createRawRowHtmlString(docs[i], docs[i-1]));
+			recordTable.appendChild(createRoundedRowElement(docs[i], docs[i-1]));
 		}
 	});
+}
+
+function createRawRowHtmlString(doc1, doc2){
+	let rawRow = document.createElement('div');
+	rawRow.classList.add('row');
+	rawRow.classList.add('raw');
+	let htmlString = '<div class="taskCol">'+doc1.text+'</div>'
+		+'<div class="timeCol">'+doc1.time+'</div>';
+	if( doc2 ){
+		let diffedTime = diffTime(doc1.time,doc2.time).split(/:/g);
+		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</div>';
+		//hours diff
+		htmlString += '<div class="hoursDiffCol">'+diffedTime[0]+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+	}
+	else{
+		htmlString +='<div class="diffCol"></div>';
+		htmlString +='<div class="hoursDiffCol"></div>';
+	}
+	rawRow.innerHTML = htmlString; 
+	return rawRow;
+}
+
+function createRoundedRowElement(doc1, doc2){
+	let roundedRow = document.createElement('div');
+	roundedRow.classList.add('row');
+	roundedRow.classList.add('rounded');
+	htmlString = '<div class="taskCol">'+doc1.text+'</div>'
+		+'<div class="timeCol">'+roundTime(doc1.time)+'</div>';
+	if( doc2 ){
+		//raw diff
+		let diffedTime = diffTime(roundTime(doc1.time),roundTime(doc2.time)).split(/:/g);
+		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</div>';
+		//hours diff
+		htmlString += '<div class="hoursDiffCol">'+diffedTime[0]+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+	}
+	else{
+		htmlString +='<div class="diffCol"></div>';
+		htmlString +='<div class="hoursDiffCol"></div>';
+	}
+	roundedRow.innerHTML = htmlString;
+	return roundedRow; 
 }
 
 //time format should me hh:mm:ss
@@ -109,7 +125,7 @@ function leftPadZero(val, length){
 	let valLength = (val+'').length; 
 	if( valLength < length ){
 		let paddedString = '';
-		for( let i=valLength; i<valLength;i++ ){
+		for( let i=valLength; i<length; i++ ){
 			paddedString += '0';
 		}
 		return paddedString + val+'';
