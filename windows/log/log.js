@@ -100,9 +100,20 @@ function loadRecordList(mDate){
 		//empty the table body
 		let recordTable = document.querySelector('.record-list');
 		recordTable.innerHTML = recordTable.querySelector('.header').outerHTML;
-		//add all the records
+		//add all the raw records
 		for( let i=0; i<docs.length; i++ ){
 			recordTable.appendChild(createRawRowHtmlString(docs[i], docs[i-1]));
+		}
+		//the following is necessary to get css-only row striping right. Gross.
+		//add a fake row if the # of rows is odd
+		if( docs.length%2 == 1 ){
+			let fakeRow = document.createElement('div');
+			fakeRow.classList.add('row');
+			fakeRow.style = 'display: none';
+			recordTable.appendChild(fakeRow);
+		} 
+		//add all the rounded records
+		for( let i=0; i<docs.length; i++ ){
 			recordTable.appendChild(createRoundedRowElement(docs[i], docs[i-1]));
 		}
 	});
