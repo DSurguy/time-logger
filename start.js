@@ -98,7 +98,7 @@ function showLogWindow(){
 
   //create the log window
   windows['log'] = new BrowserWindow({
-    width: 400,
+    width: 540,
     height: 540,
     useContentSize: false,
     center: true

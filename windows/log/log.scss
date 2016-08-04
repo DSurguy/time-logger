@@ -101,20 +101,29 @@
 		justify-content: flex-end;
 		
 		.timeCol,
-		.diffCol,
+		.rawDiffCol,
 		.hoursDiffCol {
-			width: 100px;
-			flex: 0 0 100px;
-
 			text-align: center;
 			font-family: 'consolas', monospace;
+		}
+		.timeCol{
+			width: 100px;
+			flex: 0 0 100px;
+		}
+		.rawDiffCol{
+			width: 120px;
+			flex: 0 0 120px;
+		}
+		.hoursDiffCol {
+			width: 80px;
+			flex: 0 0 80px;
 		}
 
 		.taskCol {
 			flex-grow: 1;
 			padding-left: 4px;
 			box-sizing: border-box;
-			
+
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
@@ -122,6 +131,10 @@
 
 		&:nth-child(odd):not(.header){
 			background-color: #f5f5ff;
+		}
+
+		.time-label {
+			color: #777;
 		}
 	}
 

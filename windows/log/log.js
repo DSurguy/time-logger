@@ -43,12 +43,13 @@ function createRawRowHtmlString(doc1, doc2){
 		+'<div class="timeCol">'+doc1.time+'</div>';
 	if( doc2 ){
 		let diffedTime = diffTime(doc1.time,doc2.time).split(/:/g);
-		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+diffedTime[2]+'s'+'</div>';
 		//hours diff
-		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'<span class="time-label">h</span></div>';
+		//raw diff
+		htmlString +='<div class="rawDiffCol">'+diffedTime[0]+'<span class="time-label">h</span> '+diffedTime[1]+'<span class="time-label">m</span> '+diffedTime[2]+'<span class="time-label">s</span>'+'</div>';
 	}
 	else{
-		htmlString +='<div class="diffCol"></div>';
+		htmlString +='<div class="rawDiffCol"></div>';
 		htmlString +='<div class="hoursDiffCol"></div>';
 	}
 	rawRow.innerHTML = htmlString; 
@@ -65,14 +66,14 @@ function createRoundedRowElement(doc1, doc2){
 	let ampm = parseInt(roundedTime.split(/:/g)[0]) < 12 ? 'AM' : 'PM';
 	htmlString += '<div class="timeCol">'+parseInt(roundedTimeSplit[0])+':'+roundedTimeSplit[1]+' '+ampm+'</div>';
 	if( doc2 ){
-		//raw diff
 		let diffedTime = diffTime(roundTime(doc1.time),roundTime(doc2.time)).split(/:/g);
-		htmlString +='<div class="diffCol">'+diffedTime[0]+'h '+diffedTime[1]+'m '+'</div>';
 		//hours diff
-		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'h</div>';
+		htmlString += '<div class="hoursDiffCol">'+parseInt(diffedTime[0])+'.'+(parseInt(diffedTime[1])/60).toFixed(2).split(/\./)[1]+'<span class="time-label">h</span></div>';
+		//raw diff
+		htmlString +='<div class="rawDiffCol">'+diffedTime[0]+'<span class="time-label">h</span> '+diffedTime[1]+'<span class="time-label">m</span> '+'</div>';
 	}
 	else{
-		htmlString +='<div class="diffCol"></div>';
+		htmlString +='<div class="rawDiffCol"></div>';
 		htmlString +='<div class="hoursDiffCol"></div>';
 	}
 	roundedRow.innerHTML = htmlString;

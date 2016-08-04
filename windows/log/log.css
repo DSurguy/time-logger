@@ -72,12 +72,19 @@
     align-items: stretch;
     justify-content: flex-end; }
     .record-list .row .timeCol,
-    .record-list .row .diffCol,
+    .record-list .row .rawDiffCol,
     .record-list .row .hoursDiffCol {
-      width: 100px;
-      flex: 0 0 100px;
       text-align: center;
       font-family: 'consolas', monospace; }
+    .record-list .row .timeCol {
+      width: 100px;
+      flex: 0 0 100px; }
+    .record-list .row .rawDiffCol {
+      width: 120px;
+      flex: 0 0 120px; }
+    .record-list .row .hoursDiffCol {
+      width: 80px;
+      flex: 0 0 80px; }
     .record-list .row .taskCol {
       flex-grow: 1;
       padding-left: 4px;
@@ -87,6 +94,8 @@
       overflow: hidden; }
     .record-list .row:nth-child(odd):not(.header) {
       background-color: #f5f5ff; }
+    .record-list .row .time-label {
+      color: #777; }
   .record-list .header {
     background-color: #f5f5f5;
     font-weight: 700; }
