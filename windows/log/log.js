@@ -1,6 +1,6 @@
 const Database = require('../../shared-resources/database/database.js');
 
-let datepicker;
+let datepicker, roundingMode;
 
 function setupDatePicker(){
 	let datepickerButton = document.querySelector('.date-selector');
@@ -18,6 +18,79 @@ function setupDatePicker(){
 function updateDateSelection(mDate){
 	document.querySelector('.date-selector').value = mDate.format('MM / DD / YYYY');
 	loadRecordList(mDate);
+}
+
+function setupBindings(){
+	document.querySelector('.toggle-rounding-button').addEventListener('click', function (e){
+		this.setAttribute('disabled','disabled');
+		swapRoundingMode().then(()=>{
+			this.removeAttribute('disabled');
+		}).catch((err)=>{
+			alert(err);
+			this.removeAttribute('disabled');
+		})
+	});
+}
+
+function loadRoundingMode(){
+	return new Promise( (resolve, reject) => {
+		Database.store('settings').find({key: 'rounding-mode'}, (err, docs) => {
+			if( err ){
+				reject(err); return;
+			}
+			if( docs[0] ){
+				//'raw' or 'rounded'
+				roundingMode = docs[0].value;
+				document.querySelector('.record-list').classList.add('-show-'+docs[0].value);
+				resolve();
+			}
+			else{
+				//option not yet saved, default to rounded and store
+				roundingMode = 'rounded';
+				document.querySelector('.record-list').classList.add('-show-rounded');
+				saveRoundingModeToDatabase('rounded').then(resolve).catch(reject);
+			}
+		});
+	});
+}
+
+function saveRoundingModeToDatabase(newMode){
+	return new Promise((resolve, reject) => {
+		Database.store('settings').update({key: 'rounding-mode'}, {
+			key: 'rounding-mode',
+			value: newMode
+		}, {
+			upsert: true
+		}, (err) => {
+			if( err ){
+				reject(err); return;
+			}
+			resolve();
+		});
+	});
+}
+
+function swapRoundingMode(){
+	return new Promise((resolve, reject)=>{
+		if( roundingMode == 'raw' ){
+			//swap to rounded
+			roundingMode = 'rounded';
+			document.querySelector('.toggle-rounding-button').value = 'Rounded';
+			let recordsList = document.querySelector('.record-list');
+			recordsList.classList.remove('-show-raw');
+			recordsList.classList.add('-show-rounded');
+			saveRoundingModeToDatabase('rounded').then(resolve).catch(reject);
+		}
+		else{
+			//swap to raw
+			roundingMode = 'raw';
+			document.querySelector('.toggle-rounding-button').value = 'Raw';
+			let recordsList = document.querySelector('.record-list');
+			recordsList.classList.remove('-show-rounded');
+			recordsList.classList.add('-show-raw');
+			saveRoundingModeToDatabase('raw').then(resolve).catch(reject);
+		}
+	});
 }
 
 function loadRecordList(mDate){
@@ -151,6 +224,9 @@ function leftPadZero(val, length){
 window.onload = function (){
 	Database.init().then( () => {
 		setupDatePicker();
-		updateDateSelection(moment());
+		setupBindings();
+		loadRoundingMode().then(()=>{
+			updateDateSelection(moment());
+		}).catch(alert);
 	});
 };

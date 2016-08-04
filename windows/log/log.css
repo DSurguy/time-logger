@@ -96,6 +96,10 @@
       background-color: #f5f5ff; }
     .record-list .row .time-label {
       color: #777; }
+  .record-list.-show-rounded .row.raw {
+    display: none; }
+  .record-list.-show-raw .row.rounded {
+    display: none; }
   .record-list .header {
     background-color: #f5f5f5;
     font-weight: 700; }

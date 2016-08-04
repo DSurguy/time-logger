@@ -138,6 +138,17 @@
 		}
 	}
 
+	&.-show-rounded{
+		.row.raw{
+			display: none; 
+		}
+	}
+	&.-show-raw{
+		.row.rounded{
+			display: none;
+		}
+	}
+
 	.header {
 		background-color: #f5f5f5;
 		font-weight: 700;
