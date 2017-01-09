@@ -15,9 +15,6 @@ function routeMainInputKeypress(keyCode, e){
 		case 13: //ENTER
 			commitInput(e.target.value);
 		break;
-		case 123: //F12
-			require('remote').getCurrentWindow().toggleDevTools();
-		break;
 	}
 };
 
