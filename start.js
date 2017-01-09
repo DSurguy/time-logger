@@ -106,6 +106,9 @@ function showLogWindow(){
   //load the log page
   windows['log'].setMenu(null);
   windows['log'].loadURL(__dirname+'/windows/log/log.html');
+  windows['log'].on('close', function (e){
+    windows['log'] = undefined;
+  });
 }
 
 function showOptionsWindow(){
@@ -123,6 +126,9 @@ function showOptionsWindow(){
   //load the options page
   windows['options'].setMenu(null);
   windows['options'].loadURL(__dirname+'/windows/options/options.html');
+  windows['options'].on('close', function (e){
+    windows['options'] = undefined;
+  });
 }
 
 // This method will be called when Electron has finished

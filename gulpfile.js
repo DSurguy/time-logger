@@ -1,7 +1,8 @@
 "use strict";
 const gulp = require('gulp'),
     sass = require('gulp-sass'),
-    exec = require('child_process').exec;
+    exec = require('child_process').exec,
+    fse = require('fs-extra');
 
 gulp.task('default', ['sass'], function (){
 	gulp.watch(['**/*.scss', '!./node_modules/**'], ['sass']);
@@ -41,3 +42,14 @@ gulp.task('run', ['sass'], (cb) => {
         });
     }
 });
+
+gulp.task('clear-db', function (cb){
+    fse.remove(appData()+'/time-logger', function (err){
+        if( err ) throw err;
+        else cb();
+    });
+});
+
+function appData(){
+	return process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + 'Library/Preferences' : '/var/local');
+}
